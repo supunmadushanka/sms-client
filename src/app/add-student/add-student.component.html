@@ -40,7 +40,7 @@
         <label for="Family">Family</label>
         <select [class.is-invalid]="addStudent.get('Family').invalid && addStudent.get('Family').touched"
             formControlName="Family" class="form-control" id="exampleFormControlSelect1">
-            <option class="option" *ngFor="let fm of Families" [value]=fm.strutureId>{{fm.strutureName}}</option>
+            <option class="option" *ngFor="let fm of Families" [value]=fm.id>{{fm.name}}</option>
         </select>
         <small [class.d-none]="addStudent.get('Family').valid || addStudent.get('Family').untouched"
             class="text-danger">Required</small>

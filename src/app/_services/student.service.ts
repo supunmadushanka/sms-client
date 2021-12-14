@@ -15,7 +15,7 @@ export class StudentService {
   }
 
   private studentAdd: string = `${environment.baseURL}students/add`;
-  private familyGet: string = `${environment.baseURL}students/get`;
+  private familyGet: string = `${environment.baseURL}families/getall`;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -27,8 +27,8 @@ export class StudentService {
     );
   }
 
-  public getFamilies = (hotelId: string): Observable<any> => {
-    return this.httpClient.get<any>(`${this.familyGet}/${hotelId}`).pipe(
+  public getFamilies = (): Observable<any> => {
+    return this.httpClient.get<any>(this.familyGet).pipe(
       catchError((err: HttpErrorResponse) => {
         return throwError(err || this.customError);
       })
