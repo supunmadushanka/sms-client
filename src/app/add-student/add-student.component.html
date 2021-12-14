@@ -1,0 +1,51 @@
+<form [formGroup]="addStudent" (ngSubmit)="studentSubmit()">
+    {{addStudent.value | json}}
+    <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input [class.is-invalid]="firstName.touched && firstName.invalid" formControlName="firstName" type="text"
+            class="form-control form-control-lg" id="firstName" required placeholder="First name">
+        <small [class.d-none]="firstName.valid || firstName.untouched" class="text-danger">First name reuired and must
+            contain more than 3
+            charactors<br></small>
+    </div>
+
+    <div class="form-group">
+        <label for="secondName">Last Name</label>
+        <input [class.is-invalid]="secondName.touched && secondName.invalid" formControlName="secondName" type="text"
+            class="form-control form-control-lg" id="secondName" required placeholder="Last name">
+        <small [class.d-none]="secondName.valid || secondName.untouched" class="text-danger">First name reuired and must
+            contain more than 3
+            charactors<br></small>
+    </div>
+
+    <div class="form-group">
+        <label for="Address">Address</label>
+        <input [class.is-invalid]="addStudent.get('Address').invalid && addStudent.get('Address').touched"
+            formControlName="Address" type="text" class="form-control form-control-lg" id="Address" required
+            placeholder="1234 Main St">
+        <small [class.d-none]="addStudent.get('Address').valid || addStudent.get('Address').untouched"
+            class="text-danger">Permenent address required</small>
+    </div><br>
+
+    <div class="form-group">
+        <label for="School">School</label>
+        <input [class.is-invalid]="addStudent.get('School').invalid && addStudent.get('School').touched"
+            formControlName="School" type="text" class="form-control form-control-lg" id="School" required
+            placeholder="1234 Main St">
+        <small [class.d-none]="addStudent.get('School').valid || addStudent.get('School').untouched"
+            class="text-danger">School required</small>
+    </div><br>
+
+    <div class="form-group">
+        <label for="Family">Family</label>
+        <select [class.is-invalid]="addStudent.get('Family').invalid && addStudent.get('Family').touched"
+            formControlName="Family" class="form-control" id="exampleFormControlSelect1">
+            <option class="option" *ngFor="let fm of Families" [value]=fm.strutureId>{{fm.strutureName}}</option>
+        </select>
+        <small [class.d-none]="addStudent.get('Family').valid || addStudent.get('Family').untouched"
+            class="text-danger">Required</small>
+    </div><br>
+
+    <button type="reset" class="btn btn btn-outline-dark">Reset</button>&nbsp;&nbsp;&nbsp;
+    <button [disabled]="addStudent.invalid" type="submit" class="btn btn-primary">Next</button>
+</form>
