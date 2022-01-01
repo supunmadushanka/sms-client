@@ -14,11 +14,20 @@ export class StudentService {
     message: 'Sorry! Something went wrong :('
   }
 
+  private studentGet: string = `${environment.baseURL}students/getall`;
   private studentAdd: string = `${environment.baseURL}students/add`;
   private imageAdd: string = `${environment.baseURL}students/addImage`;
   private familyGet: string = `${environment.baseURL}families/getall`;
 
   constructor(private httpClient: HttpClient) { }
+
+  public getStudents = (): Observable<any> => {
+    return this.httpClient.get<any>(this.studentGet).pipe(
+      catchError((err: HttpErrorResponse) => {
+        return throwError(err || this.customError);
+      })
+    );
+  }
 
   public addStudent = (model): Observable<any> => {
     return this.httpClient.post<any>(this.studentAdd, model).pipe(

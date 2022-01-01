@@ -1,13 +1,35 @@
 <button type="button" class="btn btn-primary add" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Add Student
 </button>
+<br>
+<dx-data-grid 
+    (onExporting)="exportGrid($event)"
+    [dataSource]="Students"
+    keyExpr="id"
+    [allowColumnReordering]="true">
+    <dxi-column dataField="first_name" [width]="100"></dxi-column>
+    <dxi-column dataField="last_name"></dxi-column>
+    <dxi-column dataField="address"></dxi-column>
+    <dxi-column dataField="school"></dxi-column>
+    <dxi-column dataField="createdAt" dataType="date">
+    </dxi-column>
+    <dxi-column dataField="updatedAt" dataType="date">
+    </dxi-column>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-editing mode="popup" [allowUpdating]="true" [allowDeleting]="true">
+    </dxo-editing>
+    <dxo-export [enabled]="true"></dxo-export>
+    >
+</dx-data-grid>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Register Student</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #myModalClose></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    #myModalClose></button>
             </div>
             <div class="modal-body">
                 <app-add-student (close)="closeModel()"></app-add-student>
