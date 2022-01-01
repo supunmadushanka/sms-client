@@ -15,6 +15,7 @@ export class StudentService {
   }
 
   private studentAdd: string = `${environment.baseURL}students/add`;
+  private imageAdd: string = `${environment.baseURL}students/addImage`;
   private familyGet: string = `${environment.baseURL}families/getall`;
 
   constructor(private httpClient: HttpClient) { }
@@ -29,6 +30,14 @@ export class StudentService {
 
   public getFamilies = (): Observable<any> => {
     return this.httpClient.get<any>(this.familyGet).pipe(
+      catchError((err: HttpErrorResponse) => {
+        return throwError(err || this.customError);
+      })
+    );
+  }
+  
+  public addImage = (model,studentId): Observable<any> => {
+    return this.httpClient.put<any>(`${this.imageAdd}/${studentId}`,model).pipe(
       catchError((err: HttpErrorResponse) => {
         return throwError(err || this.customError);
       })

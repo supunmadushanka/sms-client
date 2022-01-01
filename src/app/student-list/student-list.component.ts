@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-student-list',
@@ -10,6 +10,12 @@ export class StudentListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  @ViewChild('myModalClose') modalClose;
+
+  closeModel(){
+    this.modalClose.nativeElement.click();
   }
 
 }

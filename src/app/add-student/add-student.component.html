@@ -1,5 +1,4 @@
 <form [formGroup]="addStudent" (ngSubmit)="studentSubmit()">
-    {{addStudent.value | json}}
     <div class="form-group">
         <label for="firstName">First Name</label>
         <input [class.is-invalid]="firstName.touched && firstName.invalid" formControlName="firstName" type="text"
@@ -45,6 +44,8 @@
         <small [class.d-none]="addStudent.get('Family').valid || addStudent.get('Family').untouched"
             class="text-danger">Required</small>
     </div><br>
+
+    Image : <input type="file" name="image" multiple (change)="selectImage($event)"><br><br>
 
     <button type="reset" class="btn btn btn-outline-dark">Reset</button>&nbsp;&nbsp;&nbsp;
     <button [disabled]="addStudent.invalid" type="submit" class="btn btn-primary">Next</button>
