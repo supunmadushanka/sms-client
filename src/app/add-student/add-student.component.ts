@@ -16,6 +16,7 @@ export class AddStudentComponent implements OnInit {
 
   public Families = [];
   images: any
+  url
 
   constructor(private fb: FormBuilder, private router: Router, private _studentService: StudentService) { }
 
@@ -61,7 +62,15 @@ export class AddStudentComponent implements OnInit {
       const file = event.target.files[0];
       this.images = file;
     }
+
+    var reader = new FileReader();
+		reader.readAsDataURL(event.target.files[0]);
+		
+		reader.onload = (_event) => {
+			this.url = reader.result; 
+		}
   }
+
 
   imageSubmit(studentId) {
     const formData = new FormData();

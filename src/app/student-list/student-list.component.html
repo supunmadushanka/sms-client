@@ -1,27 +1,42 @@
 <button type="button" class="btn btn-primary add" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Add Student
 </button>
-<br>
+<div class="table">
 <dx-data-grid 
     (onExporting)="exportGrid($event)"
-    [dataSource]="Students"
+    [dataSource]="dataSource"
     keyExpr="id"
-    [allowColumnReordering]="true">
-    <dxi-column dataField="first_name" [width]="100"></dxi-column>
+    [allowColumnReordering]="true"
+    [columnAutoWidth]="true"
+    [showRowLines]="true"
+    >
+    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+  <dxo-paging [pageSize]="4"> </dxo-paging>
+    <dxi-column 
+        dataField="profile_picture"
+        [width]="100"
+        [allowFiltering]="false"
+        [allowSorting]="false"
+        cellTemplate="cellTemplate"
+    ></dxi-column>
+    <dxi-column dataField="first_name"></dxi-column>
     <dxi-column dataField="last_name"></dxi-column>
     <dxi-column dataField="address"></dxi-column>
     <dxi-column dataField="school"></dxi-column>
-    <dxi-column dataField="createdAt" dataType="date">
+    <dxi-column dataField="createdAt" dataType="date" caption="Enroll Date">
     </dxi-column>
-    <dxi-column dataField="updatedAt" dataType="date">
+    <dxi-column dataField="updatedAt" dataType="date" [visible]="false">
     </dxi-column>
+    <div *dxTemplate="let data of 'cellTemplate'">
+        <img [src]="data.value" style="height: 60px;width: 60px;border-radius: 50%;border: 2px solid rgb(22, 102, 139);"/>
+      </div>
+
     <dxo-filter-row [visible]="true"></dxo-filter-row>
     <dxo-search-panel [visible]="true"></dxo-search-panel>
-    <dxo-editing mode="popup" [allowUpdating]="true" [allowDeleting]="true">
-    </dxo-editing>
+    <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" [useIcons]="true" [refreshMode]="refreshMode"></dxo-editing>
     <dxo-export [enabled]="true"></dxo-export>
-    >
 </dx-data-grid>
+</div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -34,11 +49,6 @@
             <div class="modal-body">
                 <app-add-student (close)="closeModel()"></app-add-student>
             </div>
-            <!--
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>-->
         </div>
     </div>
 </div>
