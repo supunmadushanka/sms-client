@@ -17,12 +17,11 @@ export class StudentListComponent implements OnInit {
   public Students = [];
   dataSource: any;
   refreshModes: string[];
-
   refreshMode: string;
 
   constructor(private http: HttpClient) {
 
-    this.refreshMode = 'reshape';
+    this.refreshMode = 'full';
     this.refreshModes = ['full', 'reshape', 'repaint'];
 
     this.dataSource = new CustomStore({
@@ -31,7 +30,7 @@ export class StudentListComponent implements OnInit {
       insert: (values) => this.sendRequest(`${URL}/InsertOrder`, 'POST', {
         values: JSON.stringify(values),
       }),
-      update: (key, values) => this.sendRequest(`${URL}/UpdateOrder`, 'PUT', {
+      update: (key, values) => this.sendRequest(`${environment.baseURL}students/update`, 'PUT', {
         key,
         values: JSON.stringify(values),
       }),
