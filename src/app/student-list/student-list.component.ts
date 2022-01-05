@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpErrorResponse,HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 import { Workbook } from 'exceljs';
 import saveAs from 'file-saver';
 import { exportDataGrid } from 'devextreme/excel_exporter';
 import CustomStore from 'devextreme/data/custom_store';
+import { DxDataGridComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-student-list',
@@ -14,10 +15,12 @@ import CustomStore from 'devextreme/data/custom_store';
 })
 export class StudentListComponent implements OnInit {
 
-  public Students = [];
+  @ViewChild('dataGridVar', { static: false }) dataGrid: DxDataGridComponent;
+
   dataSource: any;
   refreshModes: string[];
   refreshMode: string;
+  FamilyData: any;
 
   constructor(private http: HttpClient) {
 
@@ -27,9 +30,9 @@ export class StudentListComponent implements OnInit {
     this.dataSource = new CustomStore({
       key: 'id',
       load: () => this.sendRequest(`${environment.baseURL}students/getall`),
-      insert: (values) => this.sendRequest(`${URL}/InsertOrder`, 'POST', {
-        values: JSON.stringify(values),
-      }),
+      insert: (values) => this.sendRequest(`${environment.baseURL}students/add`, 'POST',
+        JSON.parse(JSON.stringify(values))
+      ),
       update: (key, values) => this.sendRequest(`${environment.baseURL}students/update`, 'PUT', {
         key,
         values: JSON.stringify(values),
@@ -38,6 +41,15 @@ export class StudentListComponent implements OnInit {
         key,
       }),
     });
+
+    this.FamilyData = {
+      paginate: true,
+      store: new CustomStore({
+        key: 'id',
+        loadMode: 'raw',
+        load: () => this.sendRequest(`${environment.baseURL}families/getall`),
+      }),
+    };
   }
 
   sendRequest(url: string, method = 'GET', data: any = {}): any {
@@ -76,6 +88,7 @@ export class StudentListComponent implements OnInit {
 
   closeModel() {
     this.modalClose.nativeElement.click();
+    setTimeout(() => this.dataGrid.instance.refresh(),2500);
   }
 
   exportGrid(e) {

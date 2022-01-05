@@ -2,32 +2,50 @@
     Add Student
 </button>
 <div class="table">
-<dx-data-grid 
+<dx-data-grid
     (onExporting)="exportGrid($event)"
     [dataSource]="dataSource"
     keyExpr="id"
+    #dataGridVar
     [allowColumnReordering]="true"
-    [columnAutoWidth]="true"
+    [columnAutoWidth]="false"
     [showRowLines]="true"
     [repaintChangesOnly]="true"
+    [rowAlternationEnabled]="true"
+    [showBorders]="true"
     >
     <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
     <dxo-paging [pageSize]="4"> </dxo-paging>
+    
     <dxi-column 
         dataField="profile_picture"
         [width]="100"
         [allowFiltering]="false"
         [allowSorting]="false"
         cellTemplate="cellTemplate"
-        [allowEditing]="false"
+        [allowEditing]="true"
     ></dxi-column>
-    <dxi-column dataField="first_name"></dxi-column>
-    <dxi-column dataField="last_name"></dxi-column>
-    <dxi-column dataField="address"></dxi-column>
-    <dxi-column dataField="school"></dxi-column>
-    <dxi-column dataField="createdAt" dataType="date" caption="Enroll Date" [allowEditing]="false">
+    <dxi-column dataField="first_name" [width]="150">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
     </dxi-column>
-    <dxi-column dataField="updatedAt" dataType="date" [visible]="false">
+    <dxi-column dataField="last_name" [width]="150">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+    </dxi-column>
+    <dxi-column dataField="familyId" caption="Family" [width]="150">
+        <dxo-lookup
+            [dataSource]="FamilyData"
+            valueExpr="id"
+            displayExpr="name"
+    ></dxo-lookup>
+    <dxi-validation-rule type="required"></dxi-validation-rule>
+    </dxi-column>
+    <dxi-column dataField="address" [width]="300">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+    </dxi-column>
+    <dxi-column dataField="school">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+    </dxi-column>
+    <dxi-column dataField="createdAt" dataType="datetime" caption="Enroll Date" [allowEditing]="false">
     </dxi-column>
 
     <div *dxTemplate="let data of 'cellTemplate'">
@@ -35,7 +53,7 @@
       </div>
     <dxo-filter-row [visible]="true"></dxo-filter-row>
     <dxo-search-panel [visible]="true"></dxo-search-panel>
-    <dxo-editing mode="row" [refreshMode]="refreshMode" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" [useIcons]="true"></dxo-editing>
+    <dxo-editing mode="raw" [refreshMode]="refreshMode" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" [useIcons]="true"></dxo-editing>
     <dxo-export [enabled]="true"></dxo-export>
 </dx-data-grid>
 </div>

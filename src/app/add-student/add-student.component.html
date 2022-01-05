@@ -4,10 +4,10 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <label for="firstName">First Name</label>
-                <input [class.is-invalid]="firstName.touched && firstName.invalid" formControlName="firstName"
-                    type="text" class="form-control form-control-sm" id="firstName" required placeholder="First name">
-                <small [class.d-none]="firstName.valid || firstName.untouched" class="text-danger">First name reuired
+                <label for="first_name">First Name</label>
+                <input [class.is-invalid]="first_name.touched && first_name.invalid" formControlName="first_name"
+                    type="text" class="form-control form-control-sm" id="first_name" required placeholder="First name">
+                <small [class.d-none]="first_name.valid || first_name.untouched" class="text-danger">First name reuired
                     and
                     must
                     contain more than 3
@@ -16,10 +16,10 @@
         </div>
         <div class="col">
             <div class="form-group">
-                <label for="secondName">Last Name</label>
-                <input [class.is-invalid]="secondName.touched && secondName.invalid" formControlName="secondName"
-                    type="text" class="form-control form-control-sm" id="secondName" required placeholder="Last name">
-                <small [class.d-none]="secondName.valid || secondName.untouched" class="text-danger">First name reuired
+                <label for="last_name">Last Name</label>
+                <input [class.is-invalid]="last_name.touched && last_name.invalid" formControlName="last_name"
+                    type="text" class="form-control form-control-sm" id="last_name" required placeholder="Last name">
+                <small [class.d-none]="last_name.valid || last_name.untouched" class="text-danger">First name reuired
                     and
                     must
                     contain more than 3
@@ -29,38 +29,40 @@
     </div><br>
 
     <div class="form-group">
-        <label for="Address">Address</label>
-        <input [class.is-invalid]="addStudent.get('Address').invalid && addStudent.get('Address').touched"
-            formControlName="Address" type="text" class="form-control form-control-sm" id="Address" required
+        <label for="address">address</label>
+        <input [class.is-invalid]="addStudent.get('address').invalid && addStudent.get('address').touched"
+            formControlName="address" type="text" class="form-control form-control-sm" id="address" required
             placeholder="1234 Main St">
-        <small [class.d-none]="addStudent.get('Address').valid || addStudent.get('Address').untouched"
+        <small [class.d-none]="addStudent.get('address').valid || addStudent.get('address').untouched"
             class="text-danger">Permenent address required</small>
     </div><br>
 
     <div class="form-group">
-        <label for="School">School</label>
-        <input [class.is-invalid]="addStudent.get('School').invalid && addStudent.get('School').touched"
-            formControlName="School" type="text" class="form-control form-control-sm" id="School" required
+        <label for="school">school</label>
+        <input [class.is-invalid]="addStudent.get('school').invalid && addStudent.get('school').touched"
+            formControlName="school" type="text" class="form-control form-control-sm" id="school" required
             placeholder="1234 Main St">
-        <small [class.d-none]="addStudent.get('School').valid || addStudent.get('School').untouched"
-            class="text-danger">School required</small>
+        <small [class.d-none]="addStudent.get('school').valid || addStudent.get('school').untouched"
+            class="text-danger">school required</small>
     </div><br>
 
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <label for="Family">Family</label>
-                <select [class.is-invalid]="addStudent.get('Family').invalid && addStudent.get('Family').touched"
-                    formControlName="Family" class="form-control" id="exampleFormControlSelect1">
+                <label for="familyId">familyId</label>
+                <select [class.is-invalid]="addStudent.get('familyId').invalid && addStudent.get('familyId').touched"
+                    formControlName="familyId" class="form-control" id="familyId">
                     <option class="option" *ngFor="let fm of Families" [value]=fm.id>{{fm.name}}</option>
                 </select>
-                <small [class.d-none]="addStudent.get('Family').valid || addStudent.get('Family').untouched"
+                <small [class.d-none]="addStudent.get('familyId').valid || addStudent.get('familyId').untouched"
                     class="text-danger">Required</small>
             </div><br>
         </div>
         <div class="col">
-            <br>
-            Image : <input type="file" name="image" multiple (change)="selectImage($event)"><br><br>
+            <div class="mb-3">
+                <label for="image">Profile Picture</label>
+                <input type="file" class="form-control" name="image" formControlName="image" multiple (change)="selectImage($event)" id="image"><br><br>
+            </div>
         </div>
     </div>
 

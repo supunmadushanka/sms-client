@@ -42,19 +42,20 @@ export class AddStudentComponent implements OnInit {
       );
   }
 
-  get firstName() {
-    return this.addStudent.get('firstName');
+  get first_name() {
+    return this.addStudent.get('first_name');
   }
-  get secondName() {
-    return this.addStudent.get('secondName');
+  get last_name() {
+    return this.addStudent.get('last_name');
   }
 
   addStudent = this.fb.group({
-    firstName: ['', [Validators.required, Validators.minLength(3)]],
-    secondName: ['', [Validators.required, Validators.minLength(3)]],
-    Address: ['', [Validators.required]],
-    School: ['', [Validators.required]],
-    Family: ['', [Validators.required]]
+    first_name: ['', [Validators.required, Validators.minLength(3)]],
+    last_name: ['', [Validators.required, Validators.minLength(3)]],
+    address: ['', [Validators.required]],
+    school: ['', [Validators.required]],
+    familyId: ['', [Validators.required]],
+    image:[]
   })
 
   selectImage(event) {
@@ -93,6 +94,8 @@ export class AddStudentComponent implements OnInit {
       .subscribe(
         response => {
           this.imageSubmit(response.id);
+          this.addStudent.reset();
+          this.url='';
           this.closeParent();
           this.showSuccess();
         },
