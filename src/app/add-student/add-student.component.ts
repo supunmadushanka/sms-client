@@ -35,7 +35,6 @@ export class AddStudentComponent implements OnInit {
         err => {
           if (err instanceof HttpErrorResponse) {
             if (err.status === 401) {
-              //this.router.navigate(['/home'])
             }
           }
         }
@@ -62,6 +61,7 @@ export class AddStudentComponent implements OnInit {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.images = file;
+      console.log(file)
     }
 
     var reader = new FileReader();

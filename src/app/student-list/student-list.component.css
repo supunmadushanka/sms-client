@@ -2,11 +2,24 @@
     margin-left: auto;
     margin-right: auto;
     display: block;
-    margin-top: 1%;
+    margin-top: 0.5%;
 }
 
 .table{
     padding-left: 5%;
     padding-right: 5%;
-    padding-top: 1%;
+}
+
+#image{
+    height: 550px;
+    width: 550px;
+    border-radius: 50%;
+    border: 2px solid rgb(22, 102, 139);
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.modelsize {
+    width: 600px;
 }

@@ -7,6 +7,7 @@ import saveAs from 'file-saver';
 import { exportDataGrid } from 'devextreme/excel_exporter';
 import CustomStore from 'devextreme/data/custom_store';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { StudentService } from '../_services/student.service';
 
 @Component({
   selector: 'app-student-list',
@@ -16,30 +17,39 @@ import { DxDataGridComponent } from 'devextreme-angular';
 export class StudentListComponent implements OnInit {
 
   @ViewChild('dataGridVar', { static: false }) dataGrid: DxDataGridComponent;
+  @ViewChild('myModalClose') modalClose;
 
   dataSource: any;
   refreshModes: string[];
   refreshMode: string;
   FamilyData: any;
+  imageSrc : any;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private _studentService: StudentService) {
 
     this.refreshMode = 'full';
     this.refreshModes = ['full', 'reshape', 'repaint'];
 
     this.dataSource = new CustomStore({
       key: 'id',
-      load: () => this.sendRequest(`${environment.baseURL}students/getall`),
-      insert: (values) => this.sendRequest(`${environment.baseURL}students/add`, 'POST',
-        JSON.parse(JSON.stringify(values))
-      ),
-      update: (key, values) => this.sendRequest(`${environment.baseURL}students/update`, 'PUT', {
-        key,
-        values: JSON.stringify(values),
-      }),
-      remove: (key) => this.sendRequest(`${environment.baseURL}students/delete`, 'DELETE', {
-        key,
-      }),
+      load: () => 
+        this._studentService.getStudents()
+          .toPromise()
+          .then(
+            (data: any) => (data),
+          )
+      ,
+      insert: (values) => 
+        this._studentService.addStudent(JSON.parse(JSON.stringify(values)))
+          .toPromise()
+      ,
+      update: (key, values) => 
+        this._studentService.updateStudent({key,values: JSON.stringify(values),})
+          .toPromise()
+      ,
+      remove: (key) => 
+        this._studentService.deleteStudent({key})
+          .toPromise()
     });
 
     this.FamilyData = {
@@ -47,48 +57,23 @@ export class StudentListComponent implements OnInit {
       store: new CustomStore({
         key: 'id',
         loadMode: 'raw',
-        load: () => this.sendRequest(`${environment.baseURL}families/getall`),
+        load: () => 
+          this._studentService.getFamilies()
+          .toPromise()
+          .then(
+            (data: any) => (data),
+          )
       }),
     };
   }
 
-  sendRequest(url: string, method = 'GET', data: any = {}): any {
-    const httpParams = new HttpParams({ fromObject: data });
-    const httpOptions = { withCredentials: false, body: httpParams };
-    let result;
-
-    switch (method) {
-      case 'GET':
-        result = this.http.get<any>(url,httpOptions);
-        break;
-      case 'PUT':
-        result = this.http.put(url, httpParams, httpOptions);
-        break;
-      case 'POST':
-        result = this.http.post(url, httpParams, httpOptions);
-        break;
-      case 'DELETE':
-        result = this.http.delete(url, httpOptions);
-        break;
-    }
-
-    return result
-      .toPromise()
-      .then((data: any) => (method === 'GET' ? data : data))
-      .catch((e) => {
-        throw e && e.error && e.error.Message;
-      });
-  }
-
-
-  ngOnInit(): void {
-  }
-
-  @ViewChild('myModalClose') modalClose;
-
   closeModel() {
     this.modalClose.nativeElement.click();
-    setTimeout(() => this.dataGrid.instance.refresh(),2500);
+    setTimeout(() => this.dataGrid.instance.refresh(), 2500);
+  }
+
+  sourceSelect(src){
+    this.imageSrc = src;
   }
 
   exportGrid(e) {
@@ -103,6 +88,9 @@ export class StudentListComponent implements OnInit {
       });
     });
     e.cancel = true;
+  }
+
+  ngOnInit(): void {
   }
 
 }

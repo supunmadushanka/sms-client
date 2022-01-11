@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule , ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { DxDataGridModule } from 'devextreme-angular/ui/data-grid';
+import { DxFileUploaderModule } from 'devextreme-angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,7 +24,8 @@ import { AddStudentComponent } from './add-student/add-student.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    DxDataGridModule
+    DxDataGridModule,
+    DxFileUploaderModule
   ],
   providers: [],
   bootstrap: [AppComponent]
