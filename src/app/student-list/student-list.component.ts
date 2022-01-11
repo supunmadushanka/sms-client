@@ -1,7 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-
 import { Workbook } from 'exceljs';
 import saveAs from 'file-saver';
 import { exportDataGrid } from 'devextreme/excel_exporter';
@@ -17,39 +14,72 @@ import { StudentService } from '../_services/student.service';
 export class StudentListComponent implements OnInit {
 
   @ViewChild('dataGridVar', { static: false }) dataGrid: DxDataGridComponent;
-  @ViewChild('myModalClose') modalClose;
 
   dataSource: any;
   refreshModes: string[];
   refreshMode: string;
   FamilyData: any;
-  imageSrc : any;
+  imageSrc: any;
+  image: any;
+  key: any;
+  url: any;
 
-  constructor(private http: HttpClient,private _studentService: StudentService) {
+  constructor(private _studentService: StudentService) {
 
     this.refreshMode = 'full';
     this.refreshModes = ['full', 'reshape', 'repaint'];
 
     this.dataSource = new CustomStore({
       key: 'id',
-      load: () => 
+      load: () =>
         this._studentService.getStudents()
           .toPromise()
           .then(
             (data: any) => (data),
+            res => { // Success
+              console.log(res);
+            }
           )
+          .catch((e) => {
+            console.error(e.message);
+          })
       ,
-      insert: (values) => 
+      insert: (values) =>
         this._studentService.addStudent(JSON.parse(JSON.stringify(values)))
           .toPromise()
+          .then(
+            res => { // Success
+              console.log("Student Added");
+              this.key = res.id;
+            }
+          )
+          .catch((e) => {
+            console.error(e.message);
+          })
       ,
-      update: (key, values) => 
-        this._studentService.updateStudent({key,values: JSON.stringify(values),})
+      update: (key, values) =>
+        this._studentService.updateStudent({ key, values: JSON.stringify(values) })
           .toPromise()
+          .then(
+            res => { // Success
+              console.log(res.message);
+            }
+          )
+          .catch((e) => {
+            console.error(e.message);
+          })
       ,
-      remove: (key) => 
-        this._studentService.deleteStudent({key})
+      remove: (key) =>
+        this._studentService.deleteStudent({ key })
           .toPromise()
+          .then(
+            res => { // Success
+              console.log(res.message);
+            }
+          )
+          .catch((e) => {
+            console.error(e.message);
+          })
     });
 
     this.FamilyData = {
@@ -57,22 +87,65 @@ export class StudentListComponent implements OnInit {
       store: new CustomStore({
         key: 'id',
         loadMode: 'raw',
-        load: () => 
+        load: () =>
           this._studentService.getFamilies()
-          .toPromise()
-          .then(
-            (data: any) => (data),
-          )
+            .toPromise()
+            .then(
+              (data: any) => (data),
+              res => { // Success
+                console.log(res.message);
+              }
+            )
+            .catch((e) => {
+              console.error(e.message);
+            })
       }),
     };
   }
 
-  closeModel() {
-    this.modalClose.nativeElement.click();
-    setTimeout(() => this.dataGrid.instance.refresh(), 2500);
+  setKey(key) {
+    this.key = key.key;
+    this.url = key.data.profile_picture;
   }
 
-  sourceSelect(src){
+  Clear() {
+    this.url = '';
+  }
+
+  selectImage(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.image = file;
+    }
+
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+
+    reader.onload = (_event) => {
+      this.url = reader.result;
+    }
+  }
+
+  imageSubmit() {
+    if (this.image) {
+      const formData = new FormData();
+      formData.append('file', this.image);
+      this.image = null;
+      this._studentService.addImage(formData, this.key)
+        .subscribe(
+          response => {
+            console.log(response.message);
+            this.dataGrid.instance.refresh()
+            this.url = '';
+          },
+          error => {
+            console.error('Error!', error)
+          }
+        )
+    }
+  }
+
+  sourceSelect(src) {
     this.imageSrc = src;
   }
 

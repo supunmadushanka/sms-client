@@ -9,9 +9,11 @@ import { environment } from 'src/environments/environment';
 })
 export class StudentService {
 
+  key : any;
+
   public customError = {
     status: 500,
-    message: 'Sorry! Something went wrong :('
+    message: 'Backend Not Connected :('
   }
 
   private studentGet: string = `${environment.baseURL}students/getall`;

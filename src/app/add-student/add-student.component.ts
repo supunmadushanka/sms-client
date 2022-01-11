@@ -76,11 +76,11 @@ export class AddStudentComponent implements OnInit {
   imageSubmit(studentId) {
     const formData = new FormData();
     formData.append('file', this.images);
-
+    console.log(this.images)
     this._studentService.addImage(formData, studentId)
       .subscribe(
         response => {
-          console.log('Success!', response);
+          console.log('Successfully image added!', response);
         },
         error => {
           console.error('Error!', error)

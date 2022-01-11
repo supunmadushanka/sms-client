@@ -1,13 +1,7 @@
-.add{
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    margin-top: 0.5%;
-}
-
 .table{
     padding-left: 5%;
     padding-right: 5%;
+    padding-top: 2%;
 }
 
 #image{
@@ -22,4 +16,15 @@
 
 .modelsize {
     width: 600px;
+}
+
+.center{
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+
+  border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    border: 5px solid rgb(22, 102, 139);
 }

@@ -1,14 +1,13 @@
-<button type="button" class="btn btn-primary add" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Add Student
-</button>
 <div class="table">
 <dx-data-grid
-    (onExporting)="exportGrid($event)"
     [dataSource]="dataSource"
     keyExpr="id"
+    (onExporting)="exportGrid($event)"
+    (onEditingStart)="setKey($event)"
+    (onSaved)="imageSubmit()"
+    (onEditCanceled)="Clear()"
     #dataGridVar
     [allowColumnReordering]="true"
-    [columnAutoWidth]="false"
     [showRowLines]="true"
     [repaintChangesOnly]="true"
     [rowAlternationEnabled]="true"
@@ -25,6 +24,9 @@
         cellTemplate="cellTemplate"
         [allowEditing]="true"
     ></dxi-column>
+    <div *dxTemplate="let data of 'cellTemplate'">
+        <img [src]="data.value" (click)="sourceSelect(data.value)" data-bs-toggle="modal" data-bs-target="#imageModal" style="cursor: pointer;height: 60px;width: 60px;border-radius: 50%;border: 2px solid rgb(22, 102, 139);"/>
+    </div>
     <dxi-column dataField="first_name" [width]="150">
         <dxi-validation-rule type="required"></dxi-validation-rule>
     </dxi-column>
@@ -48,26 +50,21 @@
     <dxi-column dataField="createdAt" dataType="datetime" caption="Enroll Date" [allowEditing]="false">
     </dxi-column>
 
-    <div *dxTemplate="let data of 'cellTemplate'">
-        <img [src]="data.value" (click)="sourceSelect(data.value)" data-bs-toggle="modal" data-bs-target="#imageModal" style="cursor: pointer;height: 60px;width: 60px;border-radius: 50%;border: 2px solid rgb(22, 102, 139);"/>
-    </div>
+    
     <dxo-filter-row [visible]="true"></dxo-filter-row>
     <dxo-search-panel [visible]="true"></dxo-search-panel>
     <dxo-editing mode="popup" [refreshMode]="refreshMode" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" [useIcons]="true">
-        <dxo-popup
-        title="Student Info"
-        [showTitle]="true"
-        [width]="700"
-        [height]="500"
-      >
-      </dxo-popup>
+      <dxo-popup title="Student Info" [showTitle]="true" [width]="700" [height]="500"></dxo-popup>
       <dxo-form>
         <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+            <dxi-item [colSpan]="2">
+                <img [src]="url" alt="Avatar" class="center" onerror="src='assets/profile.png'">
+            </dxi-item>
             <dxi-item dataField="first_name"></dxi-item>
             <dxi-item dataField="last_name"></dxi-item>
             <dxi-item dataField="familyId" [colSpan]="2"></dxi-item>
             <dxi-item dataField="profile_picture" [colSpan]="2">
-                <input type="file" value="profile_picture">
+                <input type="file" class="form-control" name="image" (change)="selectImage($event)" id="pimage">
             </dxi-item>
             <dxi-item dataField="address" [colSpan]="2"></dxi-item>
             <dxi-item dataField="school" [colSpan]="2"></dxi-item>
@@ -78,20 +75,6 @@
 </dx-data-grid>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Register Student</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    #myModalClose></button>
-            </div>
-            <div class="modal-body">
-                <app-add-student (close)="closeModel()"></app-add-student>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modelsize">
